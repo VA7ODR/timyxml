@@ -274,6 +274,14 @@ void TiXmlParsingData::Stamp( const char* now, TiXmlEncoding encoding )
 						else
 							{ p +=3; ++col; }	// A normal character.
 					}
+					else
+					{
+						// TIXML_UTF_LEAD_0 (239) is the start character of a 3 byte sequence, so
+						// there is something wrong here. Just advance the pointer to evade infinite loops
+						// Fix for CVE-2021-42260 
+						// RE: https://sourceforge.net/p/tinyxml/git/merge-requests/1/
+						++p;
+					}
 				}
 				else
 				{
